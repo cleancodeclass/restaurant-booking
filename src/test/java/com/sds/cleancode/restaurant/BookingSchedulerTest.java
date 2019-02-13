@@ -24,7 +24,7 @@ public class BookingSchedulerTest {
 	private BookingScheduler bookingScheduler;
 	
 	private List<Schedule> schedules = new ArrayList<Schedule>(); 
-	private SmsSender smsSender = new SmsSender();
+	private TestableSmsSender smsSender = new TestableSmsSender();
 	private TestableMailSender mailSender = new TestableMailSender(); 
 	
 
@@ -129,5 +129,29 @@ public class BookingSchedulerTest {
 
 		// then
 		assertThat(mailSender.isSendMailMethodCalled(), is(true));
+	}
+	
+	@Test
+	public void doNotSendEmailToCustomerWithoutEmailWhenScheduleIsAdded() {
+		// given
+		Schedule schedule = new Schedule(ON_THE_HOUR, NUMBER_OF_PEOPLE, CUSTOMER_WITHOUT_EMAIL);
+
+		// when
+		bookingScheduler.addSchedule(schedule);
+
+		// then
+		assertThat(mailSender.isSendMailMethodCalled(), is(false));
+	}
+	
+	@Test
+	public void sendSmsToCustomerWhenScheduleIsAdded() {
+		// given
+		Schedule schedule = new Schedule(ON_THE_HOUR, NUMBER_OF_PEOPLE, CUSTOMER_WITHOUT_EMAIL);
+
+		// when
+		bookingScheduler.addSchedule(schedule);
+
+		// then
+		assertThat(smsSender.isSendMethodCalled(), is(true));
 	}
 }
