@@ -20,13 +20,12 @@ public class BookingSchedulerTest {
 	private static final Customer CUSTOMER_WITH_EMAIL = new Customer("", "", "");
 	private static final DateTime ON_THE_HOUR = new DateTime(2019, 2, 13, 9, 0);
 	private static final DateTime NOT_ON_THE_HOUR = new DateTime(2019, 2, 13, 9, 10);
-	
+
 	private BookingScheduler bookingScheduler;
-	
-	private List<Schedule> schedules = new ArrayList<Schedule>(); 
+
+	private List<Schedule> schedules = new ArrayList<Schedule>();
 	private TestableSmsSender smsSender = new TestableSmsSender();
-	private TestableMailSender mailSender = new TestableMailSender(); 
-	
+	private TestableMailSender mailSender = new TestableMailSender();
 
 	@Before
 	public void setup() {
@@ -70,13 +69,13 @@ public class BookingSchedulerTest {
 		// then
 		assertThat(bookingScheduler.hasSchedule(schedule), is(true));
 	}
-	
+
 	@Test
 	public void scheduleIsAddedWhenCapacityPerHourIsAvailble() {
 		// given
 		Schedule schedule = new Schedule(ON_THE_HOUR, NUMBER_OF_PEOPLE, CUSTOMER_WITHOUT_EMAIL);
 		bookingScheduler.addSchedule(schedule);
-		
+
 		Schedule newSchedule = new Schedule(ON_THE_HOUR, NUMBER_OF_PEOPLE, CUSTOMER_WITHOUT_EMAIL);
 
 		// when
@@ -85,13 +84,13 @@ public class BookingSchedulerTest {
 		// then
 		assertThat(bookingScheduler.hasSchedule(newSchedule), is(true));
 	}
-	
+
 	@Test
 	public void scheduleIsAddedWhenBookingTimeIsOnTheOtherHour() {
 		// given
 		Schedule schedule = new Schedule(ON_THE_HOUR, NUMBER_OF_PEOPLE, CUSTOMER_WITHOUT_EMAIL);
 		bookingScheduler.addSchedule(schedule);
-		
+
 		Schedule newSchedule = new Schedule(ON_THE_HOUR.plusHours(1), NUMBER_OF_PEOPLE, CUSTOMER_WITHOUT_EMAIL);
 
 		// when
@@ -100,13 +99,13 @@ public class BookingSchedulerTest {
 		// then
 		assertThat(bookingScheduler.hasSchedule(newSchedule), is(true));
 	}
-	
+
 	@Test
 	public void throwExceptionWhenCapacityPerHourIsOver() {
 		// given
 		Schedule schedule = new Schedule(ON_THE_HOUR, CAPACITY_PER_HOUR, CUSTOMER_WITHOUT_EMAIL);
 		bookingScheduler.addSchedule(schedule);
-		
+
 		Schedule newSchedule = new Schedule(ON_THE_HOUR, NUMBER_OF_PEOPLE, CUSTOMER_WITHOUT_EMAIL);
 
 		try {
@@ -118,7 +117,7 @@ public class BookingSchedulerTest {
 			assertThat(e.getMessage(), is("Number of people is over restaurant capacity per hour"));
 		}
 	}
-	
+
 	@Test
 	public void sendEmailToCustomerWithEmailWhenScheduleIsAdded() {
 		// given
@@ -130,7 +129,7 @@ public class BookingSchedulerTest {
 		// then
 		assertThat(mailSender.isSendMailMethodCalled(), is(true));
 	}
-	
+
 	@Test
 	public void doNotSendEmailToCustomerWithoutEmailWhenScheduleIsAdded() {
 		// given
@@ -142,7 +141,7 @@ public class BookingSchedulerTest {
 		// then
 		assertThat(mailSender.isSendMailMethodCalled(), is(false));
 	}
-	
+
 	@Test
 	public void sendSmsToCustomerWhenScheduleIsAdded() {
 		// given
@@ -153,5 +152,22 @@ public class BookingSchedulerTest {
 
 		// then
 		assertThat(smsSender.isSendMethodCalled(), is(true));
+	}
+
+	@Test
+	public void throwExceptionIsOnSunday() {
+		// given
+		BookingScheduler bookingScheduler = new TestableBookingScheduler(CAPACITY_PER_HOUR);
+
+		Schedule schedule = new Schedule(ON_THE_HOUR, NUMBER_OF_PEOPLE, CUSTOMER_WITHOUT_EMAIL);
+
+		try {
+			// when
+			bookingScheduler.addSchedule(schedule);
+			fail();
+		} catch (RuntimeException e) {
+			// then
+			assertThat(e.getMessage(), is("Booking system is not available on sunday"));
+		}
 	}
 }
