@@ -25,7 +25,7 @@ public class BookingSchedulerTest {
 	
 	private List<Schedule> schedules = new ArrayList<Schedule>(); 
 	private SmsSender smsSender = new SmsSender();
-	private MailSender mailSender = new MailSender(); 
+	private TestableMailSender mailSender = new TestableMailSender(); 
 	
 
 	@Before
@@ -128,6 +128,6 @@ public class BookingSchedulerTest {
 		bookingScheduler.addSchedule(schedule);
 
 		// then
-		assertThat(bookingScheduler.hasSchedule(schedule), is(true));
+		assertThat(mailSender.isSendMailMethodCalled(), is(true));
 	}
 }
