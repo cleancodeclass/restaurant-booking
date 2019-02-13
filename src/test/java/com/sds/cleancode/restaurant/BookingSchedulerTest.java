@@ -16,7 +16,7 @@ public class BookingSchedulerTest {
 
 	private static final int CAPACITY_PER_HOUR = 3;
 	private static final int NUMBER_OF_PEOPLE = 1;
-	private static final Customer CUSTOMER = new Customer("", "");
+	private static final Customer CUSTOMER_WITHOUT_EMAIL = new Customer("", "");
 	private static final Customer CUSTOMER_WITH_EMAIL = new Customer("", "", "");
 	private static final DateTime ON_THE_HOUR = new DateTime(2019, 2, 13, 9, 0);
 	private static final DateTime NOT_ON_THE_HOUR = new DateTime(2019, 2, 13, 9, 10);
@@ -47,7 +47,7 @@ public class BookingSchedulerTest {
 	@Test
 	public void throwExceptionWhenBookingTimeIsNotOnTheHour() {
 		// given
-		Schedule schedule = new Schedule(NOT_ON_THE_HOUR, NUMBER_OF_PEOPLE, CUSTOMER);
+		Schedule schedule = new Schedule(NOT_ON_THE_HOUR, NUMBER_OF_PEOPLE, CUSTOMER_WITHOUT_EMAIL);
 
 		try {
 			// when
@@ -62,7 +62,7 @@ public class BookingSchedulerTest {
 	@Test
 	public void scheduleIsAddedWhenBookingTimeIsOnTheHour() {
 		// given
-		Schedule schedule = new Schedule(ON_THE_HOUR, NUMBER_OF_PEOPLE, CUSTOMER);
+		Schedule schedule = new Schedule(ON_THE_HOUR, NUMBER_OF_PEOPLE, CUSTOMER_WITHOUT_EMAIL);
 
 		// when
 		bookingScheduler.addSchedule(schedule);
@@ -72,11 +72,12 @@ public class BookingSchedulerTest {
 	}
 	
 	@Test
-	public void scheduleIsAddedWhenBookingTimeIsSameTimeHour() {
-		Schedule schedule = new Schedule(ON_THE_HOUR, NUMBER_OF_PEOPLE, CUSTOMER);
+	public void scheduleIsAddedWhenCapacityPerHourIsAvailble() {
+		// given
+		Schedule schedule = new Schedule(ON_THE_HOUR, NUMBER_OF_PEOPLE, CUSTOMER_WITHOUT_EMAIL);
 		bookingScheduler.addSchedule(schedule);
 		
-		Schedule newSchedule = new Schedule(ON_THE_HOUR, NUMBER_OF_PEOPLE, CUSTOMER);
+		Schedule newSchedule = new Schedule(ON_THE_HOUR, NUMBER_OF_PEOPLE, CUSTOMER_WITHOUT_EMAIL);
 
 		// when
 		bookingScheduler.addSchedule(newSchedule);
@@ -86,12 +87,12 @@ public class BookingSchedulerTest {
 	}
 	
 	@Test
-	public void scheduleIsAddedWhenBookingTimeIsDifferentFromHour() {
+	public void scheduleIsAddedWhenBookingTimeIsOnTheOtherHour() {
 		// given
-		Schedule schedule = new Schedule(ON_THE_HOUR, NUMBER_OF_PEOPLE, CUSTOMER);
+		Schedule schedule = new Schedule(ON_THE_HOUR, NUMBER_OF_PEOPLE, CUSTOMER_WITHOUT_EMAIL);
 		bookingScheduler.addSchedule(schedule);
 		
-		Schedule newSchedule = new Schedule(ON_THE_HOUR.plusHours(1), NUMBER_OF_PEOPLE, CUSTOMER);
+		Schedule newSchedule = new Schedule(ON_THE_HOUR.plusHours(1), NUMBER_OF_PEOPLE, CUSTOMER_WITHOUT_EMAIL);
 
 		// when
 		bookingScheduler.addSchedule(newSchedule);
@@ -103,10 +104,10 @@ public class BookingSchedulerTest {
 	@Test
 	public void throwExceptionWhenCapacityPerHourIsOver() {
 		// given
-		Schedule schedule = new Schedule(ON_THE_HOUR, CAPACITY_PER_HOUR, CUSTOMER);
+		Schedule schedule = new Schedule(ON_THE_HOUR, CAPACITY_PER_HOUR, CUSTOMER_WITHOUT_EMAIL);
 		bookingScheduler.addSchedule(schedule);
 		
-		Schedule newSchedule = new Schedule(ON_THE_HOUR, NUMBER_OF_PEOPLE, CUSTOMER);
+		Schedule newSchedule = new Schedule(ON_THE_HOUR, NUMBER_OF_PEOPLE, CUSTOMER_WITHOUT_EMAIL);
 
 		try {
 			// when
