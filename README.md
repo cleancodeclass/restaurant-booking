@@ -16,6 +16,7 @@
 * Windows -> Preferences 메뉴
 * Java -> Editor -> Content Assist -> Favorites 항목
 * “New Type…” 버튼 : “ 클릭하여 아래내용 추가
+* jupiter 관련 라이브러리 있으면 삭제
 
 org.hamcrest.CoreMatchers
 
