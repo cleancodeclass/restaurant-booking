@@ -12,6 +12,26 @@
 * 예약완료 시 SMS발송
 * E-Mail 주소가 있는 경우는 메일 발송
 
+# 사전셋팅 (Static Import)
+* Windows -> Preferences 메뉴
+* Java -> Editor -> Content Assist -> Favorites 항목
+* “New Type…” 버튼 : “ 클릭하여 아래내용 추가
+
+org.hamcrest.CoreMatchers
+
+org.junit.Assert
+
+org.mockito.InjectMocks
+
+org.mockito.Mock
+
+org.mockito.runners.MockitoJUnitRunner
+
+org.mockito.Mockito
+
+org.mockito.MockitoAnnotations
+
+
 # 실습 내용 
 ### Test Case 작성
 * JUnit 활용하여 Test Coverage 100% 되도록 작성.
