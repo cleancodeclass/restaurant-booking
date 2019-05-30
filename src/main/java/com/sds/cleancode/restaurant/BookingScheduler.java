@@ -23,7 +23,7 @@ public class BookingScheduler {
 		
 		// throw an exception when booking time is on the hour.
 		if(schedule.getDateTime().getMinuteOfHour() != 0 ){
-			throw new RuntimeException("Booking should be on the hour.");
+			throw new RuntimeException("Booking should be on the hour again.");
 		}
 		
 		// throw an exception when capacity per hour is over
@@ -34,7 +34,7 @@ public class BookingScheduler {
 			}
 		}
 		if (numberOfPeople > capacityPerHour){
-			throw new RuntimeException("Number of people is over restaurant capacity per hour");
+			throw new RuntimeException("Number of people is over restaurant capacity per hour again");
 		}
 			
 		
