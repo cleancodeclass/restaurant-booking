@@ -60,10 +60,6 @@ public class BookingScheduler {
 		return schedules.contains(schedule);
 	}
 
-	public void setSchedules(List<Schedule> schedules) {
-		this.schedules = schedules;
-	}
-
 	public void setSmsSender(SmsSender smsSender) {
 		this.smsSender = smsSender;
 	}
