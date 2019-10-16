@@ -41,4 +41,17 @@ public class BookingSchedulerTest {
 		// assert
 		assertThat(bookingScheduler.hasSchedule(schedule), is(true));
 	}
+	
+	@Test(expected=RuntimeException.class)
+	public void 같은_시간대에_인원초과가_발생할경우_예외발생() {
+		
+		// arrange
+		Schedule fullSchedule= new Schedule(ON_THE_HOUR, MAX_CAPACITY, CUSTOMER);
+		Schedule newSchedule= new Schedule(ON_THE_HOUR, MAX_CAPACITY, CUSTOMER);
+		bookingScheduler.addSchedule(fullSchedule);
+		
+		// act
+		bookingScheduler.addSchedule(newSchedule);
+		
+	}
 }
