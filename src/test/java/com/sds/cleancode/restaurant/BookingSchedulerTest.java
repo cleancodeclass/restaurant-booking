@@ -24,7 +24,7 @@ public class BookingSchedulerTest {
 		
 		// act
 		bookingScheduler.addSchedule(schedule);
-		
+		fail();
 		// assert
 
 	}
@@ -52,6 +52,23 @@ public class BookingSchedulerTest {
 		
 		// act
 		bookingScheduler.addSchedule(newSchedule);
+		fail();
+	}
+	
+	@Test
+	public void 같은_시간대에_인원초과가_발생할경우_예외발생_Try_Catch사용() {
 		
+		// arrange
+		Schedule fullSchedule= new Schedule(ON_THE_HOUR, MAX_CAPACITY, CUSTOMER);
+		Schedule newSchedule= new Schedule(ON_THE_HOUR, MAX_CAPACITY, CUSTOMER);
+		bookingScheduler.addSchedule(fullSchedule);
+		
+		// act
+		try {
+			bookingScheduler.addSchedule(newSchedule);
+			fail();
+		} catch (RuntimeException e) {
+			assertThat(e.getMessage(), is("Number of people is over restaurant capacity per hour"));
+		}
 	}
 }
