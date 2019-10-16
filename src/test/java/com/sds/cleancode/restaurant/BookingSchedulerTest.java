@@ -9,20 +9,36 @@ import org.junit.Test;
 
 public class BookingSchedulerTest {
 
+	private static final int MAX_CAPACITY = 3;
+	private static final int NUMBER_OF_PEOPLE = 3;
+	private static final DateTime NOT_ON_THE_HOUR= new DateTime(2019, 10, 16, 11, 5);
+	private static final Customer CUSTOMER= new Customer("Yu", "010-1234-5678");
+	private static final DateTime ON_THE_HOUR= new DateTime(2019, 10, 16, 11, 0);
+	private BookingScheduler bookingScheduler= new BookingScheduler(MAX_CAPACITY);
+	
 	@Test(expected=RuntimeException.class)
 	public void 정시에_예약하지_않으면_예외발생() {
 	
 		// arrange
-		BookingScheduler BookingScheduler= new BookingScheduler(3);
-		DateTime dateTime= new DateTime(2019, 10, 16, 11, 5);
-		int numberOfPeple= 3;
-		Customer customer= new Customer("Yu", "010-1234-5678");
-		Schedule schedule= new Schedule(dateTime, numberOfPeple, customer);
+		Schedule schedule= new Schedule(NOT_ON_THE_HOUR, NUMBER_OF_PEOPLE, CUSTOMER);
 		
 		// act
-		BookingScheduler.addSchedule(schedule);
+		bookingScheduler.addSchedule(schedule);
 		
 		// assert
 
+	}
+	
+	@Test
+	public void 정시에_예약할_경우_예약성공() {
+	
+		// arrange
+		Schedule schedule= new Schedule(ON_THE_HOUR, NUMBER_OF_PEOPLE, CUSTOMER);
+		
+		// act
+		bookingScheduler.addSchedule(schedule);
+		
+		// assert
+		assertThat(bookingScheduler.hasSchedule(schedule), is(true));
 	}
 }
