@@ -37,14 +37,11 @@ public class BookingScheduler {
 			throw new RuntimeException("Number of people is over restaurant capacity per hour");
 		}
 			
-		
-		/*
 		// throw an exception on sunday
-		DateTime now = new DateTime();
+		DateTime now = getNow();
 		if(now.getDayOfWeek() == DateTimeConstants.SUNDAY){
 			throw new RuntimeException("Booking system is not available on sunday");
 		}
-		*/
 		
 		schedules.add(schedule);
 		
@@ -54,6 +51,10 @@ public class BookingScheduler {
 		if(schedule.getCustomer().getEmail() != null){
 			mailSender.sendMail(schedule);
 		}
+	}
+
+	public DateTime getNow() {
+		return new DateTime();
 	}
 	
 	public boolean hasSchedule(Schedule schedule) {
